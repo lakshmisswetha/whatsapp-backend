@@ -1,6 +1,7 @@
 import createHttpError from "http-errors";
 import UserModel, { IUser } from "../models/userModel";
 import validator from "validator";
+import bcrypt from "bcrypt";
 
 const { DEFAULT_PIC, DEFAULT_STATUS } = process.env;
 
@@ -52,5 +53,21 @@ export const createUser = async (userData: IUser) => {
         password,
     }).save();
 
+    return user;
+};
+
+export const signUser = async (email: string, password: string) => {
+    const user = await UserModel.findOne({ email: email.toLowerCase() }).lean();
+    if (!user) throw createHttpError.NotFound("invalid credentials");
+
+    let passwordMatches = await bcrypt.compare(password, user.password);
+    if (!passwordMatches) throw createHttpError.NotFound("invalid credentials");
+
+    return user;
+};
+
+export const findUser = async (userId: string) => {
+    const user = await UserModel.findById(userId);
+    if (!user) throw createHttpError.BadRequest("please fill all fields");
     return user;
 };
