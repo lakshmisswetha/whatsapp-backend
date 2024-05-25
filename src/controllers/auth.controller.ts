@@ -30,13 +30,13 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 
         res.status(200).json({
             message: "register success",
-            access_token,
             user: {
                 _id: newUser._id,
                 name: newUser.name,
                 email: newUser.email,
                 picture: newUser.picture,
                 status: newUser.status,
+                access_token,
             },
         });
     } catch (error) {
@@ -65,13 +65,13 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         });
         res.status(200).json({
             message: "register success",
-            access_token,
             user: {
                 _id: user._id,
                 name: user.name,
                 email: user.email,
                 picture: user.picture,
                 status: user.status,
+                access_token,
             },
         });
     } catch (error) {
@@ -109,13 +109,13 @@ export const refreshToken = async (req: Request, res: Response, next: NextFuncti
         );
 
         res.status(200).json({
-            access_token,
             user: {
                 _id: user._id,
                 name: user.name,
                 email: user.email,
                 picture: user.picture,
                 status: user.status,
+                access_token,
             },
         });
     } catch (error) {
